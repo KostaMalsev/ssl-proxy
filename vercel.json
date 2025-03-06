@@ -1,14 +1,5 @@
 {
-  "rewrites": [
-    { "source": "/health", "destination": "/api/proxy/health" },
-    { "source": "/clients", "destination": "/api/proxy/clients" },
-    { "source": "/clients/:path*", "destination": "/api/proxy/clients/:path*" },
-    { "source": "/projects", "destination": "/api/proxy/projects" },
-    { "source": "/projects/:path*", "destination": "/api/proxy/projects/:path*" },
-    { "source": "/invoices", "destination": "/api/proxy/invoices" },
-    { "source": "/invoices/:path*", "destination": "/api/proxy/invoices/:path*" },
-    { "source": "/followups", "destination": "/api/proxy/followups" },
-    { "source": "/followups/:path*", "destination": "/api/proxy/followups/:path*" }
-  ]
+  "rewrites": [{ "source": "/(.*)", "destination": "/api/proxy" }]
 }
+
 
