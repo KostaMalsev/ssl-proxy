@@ -20,7 +20,7 @@ export default async function handler(req, res) {
     }
 
     // Build the target URL with query parameters for GET requests
-    let targetUrl = `http://18.207.232.153:3003${targetPath}`
+    let targetUrl = `http://18.207.232.153:3003/${targetPath}`
 
     // Add query parameters for GET requests
     if (method === "GET" && Object.keys(params).length > 0) {
