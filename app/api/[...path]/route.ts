@@ -55,6 +55,8 @@ async function handleRequest(request: NextRequest) {
       // Don't follow redirects automatically, let the client handle them
       redirect: "manual",
     })
+    
+    conosle.log('got a responce:',response)
 
     // Clone the response headers
     const responseHeaders = new Headers()
