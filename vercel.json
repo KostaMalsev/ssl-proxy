@@ -2,24 +2,41 @@
   "rewrites": [
     {
       "source": "/clients",
-      "destination": "http://54.225.62.254:3003/clients"
+      "destination": "/api/clients"
+    },
+    {
+      "source": "/clients/:path*",
+      "destination": "/api/clients/:path*"
     },
     {
       "source": "/projects",
-      "destination": "http://54.225.62.254:3003/projects"
+      "destination": "/api/projects"
+    },
+    {
+      "source": "/projects/:path*",
+      "destination": "/api/projects/:path*"
     },
     {
       "source": "/invoices",
-      "destination": "http://54.225.62.254:3003/invoices"
+      "destination": "/api/invoices"
+    },
+    {
+      "source": "/invoices/:path*",
+      "destination": "/api/invoices/:path*"
     },
     {
       "source": "/followups",
-      "destination": "http://54.225.62.254:3003/followups"
+      "destination": "/api/followups"
+    },
+    {
+      "source": "/followups/:path*",
+      "destination": "/api/followups/:path*"
     },
     {
       "source": "/health",
-      "destination": "http://54.225.62.254:3003/health"
+      "destination": "/api/health"
     }
   ]
 }
+
 
