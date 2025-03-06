@@ -1,44 +1,71 @@
-// This is a serverless function, not an Edge Function
 export default async function handler(req, res) {
-  const { path = [] } = req.query
-  const pathString = Array.isArray(path) ? path.join("/") : path
-
-  // Get the target path from the URL or use the path from the query
-  const targetPath = req.url.replace(/^\/api\/proxy/, "") || `/${pathString}`
-
-  // Log the request details
-  console.log("Request path:", targetPath)
-  console.log("Method:", req.method)
+  // Only accept POST requests to this endpoint
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method not allowed. Use POST for all requests." })
+  }
 
   try {
-    // Forward the request to your EC2 instance
-    const targetUrl = `http://18.207.232.153:3003${targetPath}`
-    console.log("Forwarding to:", targetUrl)
+    // Extract request details from the POST body
+    const {
+      targetPath, // The path to forward to (e.g., '/health', '/clients')
+      method = "GET", // The HTTP method to use when forwarding (defaults to GET)
+      params = {}, // Query parameters for GET requests
+      body = null, // Body for POST/PUT/PATCH requests
+      headers = {}, // Additional headers to forward
+    } = req.body
 
-    // Create headers object without host
-    const headers = { ...req.headers }
-    delete headers.host
+    // Validate required fields
+    if (!targetPath) {
+      return res.status(400).json({ error: "Missing targetPath in request body" })
+    }
 
-    // Forward the request
+    // Build the target URL with query parameters for GET requests
+    let targetUrl = `http://18.207.232.153:3003${targetPath}`
+
+    // Add query parameters for GET requests
+    if (method === "GET" && Object.keys(params).length > 0) {
+      const queryString = new URLSearchParams(params).toString()
+      targetUrl = `${targetUrl}?${queryString}`
+    }
+
+    console.log(`Forwarding ${method} request to: ${targetUrl}`)
+
+    // Set up request headers
+    const requestHeaders = {
+      "Content-Type": "application/json",
+      ...headers,
+    }
+
+    // Forward the request to the EC2 instance
     const response = await fetch(targetUrl, {
-      method: req.method,
-      headers: headers,
-      body: ["GET", "HEAD"].includes(req.method) ? undefined : JSON.stringify(req.body),
+      method: method,
+      headers: requestHeaders,
+      body: ["GET", "HEAD"].includes(method) ? undefined : JSON.stringify(body),
     })
 
     // Get response data
-    const data = await response.text()
+    let responseData
+    const contentType = response.headers.get("content-type")
 
-    // Set response headers
-    for (const [key, value] of Object.entries(response.headers.raw())) {
-      res.setHeader(key, value)
+    if (contentType && contentType.includes("application/json")) {
+      responseData = await response.json()
+    } else {
+      responseData = await response.text()
     }
 
-    // Send response
-    res.status(response.status).send(data)
+    // Return the response
+    return res.status(response.status).json({
+      status: response.status,
+      statusText: response.statusText,
+      data: responseData,
+      headers: Object.fromEntries(response.headers.entries()),
+    })
   } catch (error) {
     console.error("Proxy error:", error)
-    res.status(500).json({ error: "Failed to proxy request", details: error.message })
+    return res.status(500).json({
+      error: "Failed to proxy request",
+      message: error.message,
+    })
   }
 }
 
