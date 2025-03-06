@@ -1,7 +1,7 @@
 import type { NextRequest } from "next/server"
 
 // Define the EC2 instance base URL
-const EC2_BASE_URL = "http://54.225.62.254:3003"
+const EC2_BASE_URL = "http://18.207.232.153:3003"
 
 // Support all HTTP methods
 export async function GET(request: NextRequest) {
