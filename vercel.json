@@ -2,19 +2,23 @@
   "rewrites": [
     {
       "source": "/clients",
-      "destination": "http://107.23.198.211:3003/clients"
+      "destination": "http://54.225.62.254:3003/clients"
     },
     {
       "source": "/projects",
-      "destination": "http://107.23.198.211:3003/projects"
+      "destination": "http://54.225.62.254:3003/projects"
     },
     {
       "source": "/invoices",
-      "destination": "http://107.23.198.211:3003/invoices"
+      "destination": "http://54.225.62.254:3003/invoices"
     },
     {
       "source": "/followups",
-      "destination": "http://107.23.198.211:3003/followups"
+      "destination": "http://54.225.62.254:3003/followups"
+    },
+    {
+      "source": "/health",
+      "destination": "http://54.225.62.254:3003/health"
     }
   ]
 }
