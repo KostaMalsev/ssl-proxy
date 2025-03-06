@@ -27,8 +27,10 @@ export async function PATCH(request: NextRequest) {
 // Common handler function for all methods
 async function handleRequest(request: NextRequest) {
   try {
+    
     // Extract the path from the request URL
     const path = request.nextUrl.pathname.replace("/api/", "")
+    console.log('The path in handle request:',path)
 
     // Get the search params (query string)
     const searchParams = request.nextUrl.search
