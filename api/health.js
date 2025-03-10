@@ -1,6 +1,6 @@
 export default async function handler(req, res) {
   try {
-    const response = await fetch("http://18.207.232.153:3003/health")
+    const response = await fetch("https://crm-rails-kosta-production.up.railway.app/health")
     const data = await response.text()
     res.status(response.status).send(data)
   } catch (error) {
